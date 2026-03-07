@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  profileData   String?   // JSON string: Skill levels, preferences
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  conversations Conversation[]
+  attempts      Attempt[]
+  userStats     UserStats?
+  badges        UserBadge[]
+  dailyActivity DailyActivity[]
+
+  @@map("users")
+}
+
+model Problem {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  statement   String   // Markdown content
+  difficulty  String   // 'Easy', 'Medium', 'Hard'
+  topic       String   // 'Arrays', 'DP', etc.
+  metadata    String?  // JSON string: Pedagogical metadata (concepts, misconceptions)
+  testCases   String?  // JSON string: Test cases for execution
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  conversations Conversation[]
+  attempts      Attempt[]
+
+  @@map("problems")
+}
+
+model Conversation {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  problemId String
+  problem   Problem  @relation(fields: [problemId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages  Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  role           String       // 'user', 'assistant', 'system'
+  content        String
+  createdAt      DateTime     @default(now())
+
+  @@map("messages")
+}
+
+model Attempt {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  problemId String
+  problem   Problem  @relation(fields: [problemId], references: [id])
+  code      String
+  status    String   // 'accepted', 'wrong_answer', 'runtime_error'
+  output    String?
+  createdAt DateTime @default(now())
+
+  @@map("attempts")
+}
+
+model UserStats {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  totalSolved   Int      @default(0)
+  currentStreak Int      @default(0)
+  maxStreak     Int      @default(0)
+  rank          String   @default("Novice") // 'Novice', 'Bronze', 'Silver', 'Gold', 'Master'
+  updatedAt     DateTime @updatedAt
+
+  @@map("user_stats")
+}
+
+model DailyActivity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  date      String   // ISO date string e.g. "2023-10-24" formatted as YYYY-MM-DD
+  count     Int      @default(1)
+
+  @@unique([userId, date])
+  @@map("daily_activities")
+}
+
+model Badge {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String
+  icon        String   // string identifier for Lucide icon
+  createdAt   DateTime @default(now())
+
+  users       UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+  earnedAt  DateTime @default(now())
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}

@@ -1,0 +1,336 @@
+/* ===== ALGO VISUALIZER MODAL OVERLAY ===== */
+.algo-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10, 8, 7, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 2rem 1rem 4rem;
+  animation: algo-backdrop-in 0.25s ease forwards;
+}
+
+@keyframes algo-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.algo-modal {
+  width: 100%;
+  max-width: 760px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow:
+    0 0 60px rgba(201, 106, 53, 0.12),
+    0 40px 80px rgba(0, 0, 0, 0.6);
+  animation: algo-modal-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  overflow: hidden;
+}
+
+@keyframes algo-modal-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== MODAL HEADER ===== */
+.algo-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(234, 230, 223, 0.03);
+}
+
+.algo-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.algo-modal-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-burnt-orange);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.algo-modal-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.algo-modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-default);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.algo-modal-close:hover {
+  background: rgba(181, 77, 77, 0.12);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  transform: scale(1.08);
+}
+
+/* ===== COMPLEXITY BAR ===== */
+.algo-complexity-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.75rem;
+  background: rgba(201, 106, 53, 0.05);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.algo-complexity-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+.algo-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.algo-badge-time {
+  background: rgba(201, 106, 53, 0.15);
+  color: var(--accent-burnt-orange);
+  border: 1px solid rgba(201, 106, 53, 0.35);
+}
+
+.algo-badge-space {
+  background: rgba(88, 127, 90, 0.15);
+  color: var(--accent-earth-green);
+  border: 1px solid rgba(88, 127, 90, 0.35);
+}
+
+/* ===== STEPS BODY ===== */
+.algo-visualizer {
+  padding: 2rem 1.75rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.algo-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+/* ===== STEP CARD ===== */
+.algo-step {
+  width: 100%;
+  max-width: 580px;
+  opacity: 0;
+  animation: algo-step-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes algo-step-in {
+  from { opacity: 0; transform: scale(0.92) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.algo-step-card {
+  padding: 1rem 1.4rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.algo-step-card:hover { transform: translateY(-2px); }
+
+/* Shape variants */
+.algo-step-card.shape-init {
+  border-radius: 999px;
+  background: rgba(88, 127, 90, 0.12);
+  border: 1.5px solid rgba(88, 127, 90, 0.4);
+  box-shadow: 0 0 16px rgba(88, 127, 90, 0.15);
+}
+.algo-step-card.shape-loop {
+  border-radius: 12px;
+  background: rgba(201, 106, 53, 0.1);
+  border: 1.5px solid rgba(201, 106, 53, 0.4);
+  box-shadow: 0 0 16px rgba(201, 106, 53, 0.12);
+}
+.algo-step-card.shape-condition {
+  background: rgba(213, 155, 74, 0.12);
+  border: 1.5px solid rgba(213, 155, 74, 0.45);
+  border-radius: 6px 24px 6px 24px;
+  box-shadow: 0 0 16px rgba(213, 155, 74, 0.15);
+}
+.algo-step-card.shape-process {
+  border-radius: 12px;
+  background: rgba(234, 230, 223, 0.05);
+  border: 1.5px solid var(--border-default);
+}
+.algo-step-card.shape-return {
+  border-radius: 999px;
+  background: rgba(88, 127, 90, 0.18);
+  border: 1.5px solid rgba(88, 127, 90, 0.5);
+  box-shadow: 0 0 20px rgba(88, 127, 90, 0.25);
+}
+
+/* Icon */
+.algo-step-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.shape-init      .algo-step-icon { background: rgba(88, 127, 90, 0.3);    color: var(--accent-earth-green); }
+.shape-loop      .algo-step-icon { background: rgba(201, 106, 53, 0.25);  color: var(--accent-burnt-orange); }
+.shape-condition .algo-step-icon { background: rgba(213, 155, 74, 0.25);  color: var(--accent-amber); }
+.shape-process   .algo-step-icon { background: rgba(234, 230, 223, 0.08); color: var(--text-secondary); }
+.shape-return    .algo-step-icon { background: rgba(88, 127, 90, 0.35);   color: var(--accent-earth-green); }
+
+/* Text */
+.algo-step-content { flex: 1; min-width: 0; }
+
+.algo-step-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.3rem 0;
+}
+
+.algo-step-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Type label */
+.algo-step-type {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0.15rem;
+}
+.shape-init      .algo-step-type { background: rgba(88, 127, 90, 0.2);    color: var(--accent-earth-green); }
+.shape-loop      .algo-step-type { background: rgba(201, 106, 53, 0.2);   color: var(--accent-burnt-orange); }
+.shape-condition .algo-step-type { background: rgba(213, 155, 74, 0.2);   color: var(--accent-amber); }
+.shape-process   .algo-step-type { background: rgba(234, 230, 223, 0.06); color: var(--text-muted); }
+.shape-return    .algo-step-type { background: rgba(88, 127, 90, 0.25);   color: var(--accent-earth-green); }
+
+/* ===== CONNECTOR ===== */
+.algo-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 40px;
+  flex-shrink: 0;
+}
+.algo-connector-line {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(to bottom, var(--border-default), var(--accent-burnt-orange));
+  opacity: 0.45;
+}
+.algo-connector-arrow {
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--accent-burnt-orange);
+  opacity: 0.55;
+}
+.algo-loop-badge {
+  font-size: 0.6rem;
+  color: var(--accent-burnt-orange);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* ===== LOADING STATE ===== */
+.algo-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.algo-loading-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.algo-loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-burnt-orange);
+  animation: algo-dot-pulse 1.4s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+.algo-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.algo-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes algo-dot-pulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40%           { opacity: 1;   transform: scale(1.2); }
+}
+
+/* ===== ERROR STATE ===== */
+.algo-error-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.algo-error-state p {
+  color: var(--accent-red);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.algo-error-link {
+  font-size: 0.8rem;
+  color: var(--accent-burnt-orange);
+  text-decoration: none;
+}
+.algo-error-link:hover { text-decoration: underline; }

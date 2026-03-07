@@ -1,0 +1,45 @@
+.generate-btn {
+  border: none;
+  width: 12em; /* adjusted for UI fit */
+  height: 3.5em; /* adjusted */
+  border-radius: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-elevated); /* Adapted to theme */
+  cursor: pointer;
+  transition: all 450ms ease-in-out;
+  box-shadow: var(--shadow-3d-out);
+}
+
+.generate-btn .sparkle {
+  fill: var(--text-muted);
+  transition: all 800ms ease;
+}
+
+.generate-btn .text {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.generate-btn:hover {
+  /* Earthy / Clay Theme: Dark brown and amber tones */
+  background: linear-gradient(0deg, #8B5A2B, #5C3A21);
+  box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.3),
+    0px 0px 0px 4px rgba(255, 255, 255, 0.1),
+    0px 0px 80px 0px rgba(139, 90, 43, 0.6); /* Warm earthy glow */
+  transform: translateY(-2px);
+}
+
+.generate-btn:hover .text {
+  color: #ffffff;
+}
+
+.generate-btn:hover .sparkle {
+  fill: #ffffff;
+  transform: scale(1.2) rotate(15deg);
+}

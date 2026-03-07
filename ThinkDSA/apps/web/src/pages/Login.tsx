@@ -1,0 +1,230 @@
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuthStore } from '../context/authStore';
+import { login } from '../services/authService';
+import { Code2, ArrowRight, AlertCircle, Target, Zap, Brain } from 'lucide-react';
+import { OrbLoader } from '../components/OrbLoader';
+
+export const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const setAuth = useAuthStore((state) => state.setAuth);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        try {
+            const data = await login(email, password);
+            setAuth(data);
+            navigate('/');
+        } catch (err: any) {
+            setError(err.response?.data?.error || 'Login failed');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+        }}>
+            {/* Left Panel — Branding */}
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '3rem',
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
+                position: 'relative',
+                overflow: 'hidden',
+            }}>
+                {/* Decorative circles */}
+                <div style={{
+                    position: 'absolute',
+                    width: '400px',
+                    height: '400px',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+                    top: '-100px',
+                    right: '-100px',
+                }} />
+                <div style={{
+                    position: 'absolute',
+                    width: '300px',
+                    height: '300px',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(201, 106, 53, 0.08) 0%, transparent 70%)',
+                    bottom: '-50px',
+                    left: '-50px',
+                }} />
+
+                <div className="animate-fade-in" style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+                    {/* Orb Loader as decorative centerpiece */}
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+                        <OrbLoader size={1.3} />
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.75rem',
+                        marginBottom: '2rem',
+                    }}>
+                        <Code2 size={40} style={{ color: 'var(--accent-burnt-orange)' }} />
+                        <span style={{
+                            fontSize: '2.5rem',
+                            fontWeight: 800,
+                            background: 'linear-gradient(135deg, var(--accent-burnt-orange), var(--accent-earth-green))',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}>ThinkDSA</span>
+                    </div>
+                    <p style={{
+                        color: 'var(--text-secondary)',
+                        fontSize: '1.15rem',
+                        maxWidth: '400px',
+                        lineHeight: 1.7,
+                    }}>
+                        Master Data Structures & Algorithms with an AI tutor that guides your thinking — not gives you answers.
+                    </p>
+                    <div style={{
+                        display: 'flex',
+                        gap: '2rem',
+                        marginTop: '2.5rem',
+                        justifyContent: 'center',
+                    }}>
+                        {[
+                            { label: 'Socratic Method', value: <Target size={24} color="var(--accent-amber)" /> },
+                            { label: 'Code Execution', value: <Zap size={24} color="var(--accent-burnt-orange)" /> },
+                            { label: 'AI Powered', value: <Brain size={24} color="var(--accent-earth-green)" /> },
+                        ].map((item) => (
+                            <div key={item.label} style={{ textAlign: 'center' }}>
+                                <div style={{ marginBottom: '0.25rem' }}>{item.value}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{item.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Panel — Form */}
+            <div style={{
+                width: '480px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                padding: '3rem',
+                background: 'var(--bg-secondary)',
+                borderLeft: '1px solid var(--border-subtle)',
+            }}>
+                <div className="animate-slide-up">
+                    <h2 style={{
+                        fontSize: '1.75rem',
+                        fontWeight: 700,
+                        marginBottom: '0.5rem',
+                        color: 'var(--text-primary)',
+                    }}>Welcome back</h2>
+                    <p style={{
+                        color: 'var(--text-muted)',
+                        marginBottom: '2rem',
+                        fontSize: '0.95rem',
+                    }}>Sign in to continue your learning journey</p>
+
+                    {error && (
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.75rem 1rem',
+                            borderRadius: 'var(--radius-md)',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.25)',
+                            color: '#f87171',
+                            fontSize: '0.85rem',
+                            marginBottom: '1.5rem',
+                        }}>
+                            <AlertCircle size={16} />
+                            {error.toString()}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit}>
+                        <div style={{ marginBottom: '1.25rem' }}>
+                            <label style={{
+                                display: 'block',
+                                fontSize: '0.85rem',
+                                fontWeight: 500,
+                                color: 'var(--text-secondary)',
+                                marginBottom: '0.5rem',
+                            }}>Email</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="input-field"
+                                placeholder="you@example.com"
+                                required
+                            />
+                        </div>
+                        <div style={{ marginBottom: '1.75rem' }}>
+                            <label style={{
+                                display: 'block',
+                                fontSize: '0.85rem',
+                                fontWeight: 500,
+                                color: 'var(--text-secondary)',
+                                marginBottom: '0.5rem',
+                            }}>Password</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="input-field"
+                                placeholder="••••••••"
+                                required
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="btn-primary"
+                            disabled={loading}
+                            style={{
+                                width: '100%',
+                                padding: '0.8em',
+                                fontSize: '0.95rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
+                            }}
+                        >
+                            {loading ? 'Signing in...' : (
+                                <>Sign In <ArrowRight size={16} /></>
+                            )}
+                        </button>
+                    </form>
+
+                    <p style={{
+                        marginTop: '1.5rem',
+                        textAlign: 'center',
+                        fontSize: '0.9rem',
+                        color: 'var(--text-muted)',
+                    }}>
+                        Don't have an account?{' '}
+                        <Link to="/register" style={{
+                            color: 'var(--accent-burnt-orange)',
+                            textDecoration: 'none',
+                            fontWeight: 500,
+                        }}>Create one</Link>
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};

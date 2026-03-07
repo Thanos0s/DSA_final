@@ -1,0 +1,11 @@
+{
+    "name": "@thinkdsa/shared",
+    "version": "0.0.1",
+    "main": "src/index.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.1.6"
+    }
+}
