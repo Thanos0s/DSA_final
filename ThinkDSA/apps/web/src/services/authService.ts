@@ -59,6 +59,33 @@ export const register = async (email: string, password: string, name?: string): 
     }
 };
 
+export const signInWithGoogle = async (): Promise<AuthResponse> => {
+    // Dynamically import signInWithPopup here if desired, or export at the top (we'll assume top for this change)
+    const { signInWithPopup } = await import('firebase/auth');
+    const { auth, googleProvider } = await import('../config/firebase');
+
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const firebaseUser = result.user;
+        const token = await firebaseUser.getIdToken();
+
+        // Sync with backend (creates user if they don't exist)
+        const response = await api.post<AuthResponse>('/auth/sync', {
+            email: firebaseUser.email,
+            firebaseUid: firebaseUser.uid,
+            name: firebaseUser.displayName
+        });
+
+        return {
+            token,
+            user: response.data.user
+        };
+    } catch (error: any) {
+        console.error('Google Sign-In Error:', error);
+        throw new Error(error.message || 'Failed to sign in with Google');
+    }
+};
+
 export const logout = async (): Promise<void> => {
     await firebaseSignOut(auth);
 };
