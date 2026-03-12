@@ -22,7 +22,7 @@ export const Login = () => {
             setAuth(data);
             navigate('/');
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Login failed');
+            setError(err.message || 'Login failed');
         } finally {
             setLoading(false);
         }

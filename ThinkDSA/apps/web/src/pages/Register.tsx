@@ -22,7 +22,7 @@ export const Register = () => {
             setAuth(data);
             navigate('/');
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Registration failed');
+            setError(err.message || 'Registration failed');
         } finally {
             setLoading(false);
         }
