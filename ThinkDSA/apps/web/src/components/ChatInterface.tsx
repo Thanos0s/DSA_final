@@ -6,13 +6,16 @@ import { AILoader } from '../components/AILoader';
 
 interface ChatInterfaceProps {
     problemId?: string;
+    code?: string;
+    language?: string;
 }
 
-export const ChatInterface = ({ problemId }: ChatInterfaceProps) => {
+export const ChatInterface = ({ problemId, code, language }: ChatInterfaceProps) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [conversationId, setConversationId] = useState<string | undefined>(undefined);
+    const [selectedModel, setSelectedModel] = useState<'groq' | 'ollama'>('groq');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -39,7 +42,7 @@ export const ChatInterface = ({ problemId }: ChatInterfaceProps) => {
         setLoading(true);
 
         try {
-            const { message, conversationId: newConvId } = await sendMessage(input, problemId, conversationId);
+            const { message, conversationId: newConvId } = await sendMessage(input, problemId, conversationId, selectedModel, code, language);
             setConversationId(newConvId);
             setMessages((prev) => [...prev, message]);
         } catch (error) {
@@ -85,14 +88,52 @@ export const ChatInterface = ({ problemId }: ChatInterfaceProps) => {
                 background: 'rgba(234, 230, 223, 0.03)',
                 display: 'flex',
                 alignItems: 'center',
+                flexWrap: 'wrap',
                 gap: '0.5rem',
             }}>
-                <Sparkles size={18} style={{ color: 'var(--accent-burnt-orange)' }} />
-                <span style={{
-                    fontWeight: 600,
-                    fontSize: '0.9rem',
-                    color: 'var(--text-primary)',
-                }}>AI Tutor</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: '100px' }}>
+                    <Sparkles size={18} style={{ color: 'var(--accent-burnt-orange)' }} />
+                    <span style={{
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                        color: 'var(--text-primary)',
+                    }}>AI Tutor</span>
+                </div>
+
+                {/* Model Selector Pill Toggle */}
+                <div style={{
+                    display: 'flex',
+                    background: 'var(--bg-primary)',
+                    borderRadius: '9999px',
+                    padding: '3px',
+                    border: '1px solid var(--border-subtle)',
+                    boxShadow: 'var(--shadow-3d-in)',
+                    gap: '2px',
+                }}>
+                    {(['groq', 'ollama'] as const).map((m) => (
+                        <button
+                            key={m}
+                            onClick={() => setSelectedModel(m)}
+                            style={{
+                                padding: '0.2rem 0.7rem',
+                                borderRadius: '9999px',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontSize: '0.72rem',
+                                fontWeight: 600,
+                                transition: 'all 0.2s ease',
+                                background: selectedModel === m
+                                    ? m === 'groq' ? '#f97316' : '#22c55e'
+                                    : 'transparent',
+                                color: selectedModel === m ? '#fff' : 'var(--text-muted)',
+                                boxShadow: selectedModel === m ? '0 1px 4px rgba(0,0,0,0.3)' : 'none',
+                            }}
+                        >
+                            {m === 'groq' ? '⚡ Groq' : '🦙 Ollama'}
+                        </button>
+                    ))}
+                </div>
+
                 <span style={{
                     fontSize: '0.7rem',
                     padding: '0.1rem 0.6rem',
@@ -117,38 +158,38 @@ export const ChatInterface = ({ problemId }: ChatInterfaceProps) => {
                 {messages.length === 0 && (
                     <div className="animate-fade-in" style={{
                         textAlign: 'center',
-                        marginTop: '2rem',
-                        padding: '1rem',
+                        marginTop: '1rem',
+                        padding: '0.5rem',
                     }}>
                         <div className="clay-card" style={{
-                            width: '64px',
-                            height: '64px',
+                            width: '48px',
+                            height: '48px',
                             borderRadius: '50%',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            margin: '0 auto 1.5rem',
+                            margin: '0 auto 1rem',
                             background: 'var(--bg-elevated)',
                         }}>
-                            <Bot size={32} style={{ color: 'var(--accent-earth-green)' }} />
+                            <Bot size={24} style={{ color: 'var(--accent-earth-green)' }} />
                         </div>
                         <p style={{
                             color: 'var(--text-primary)',
                             fontWeight: 600,
-                            fontSize: '1.1rem',
-                            marginBottom: '0.5rem',
+                            fontSize: '0.95rem',
+                            marginBottom: '0.35rem',
                         }}>Hi! I'm your AI Tutor</p>
                         <p style={{
                             color: 'var(--text-muted)',
-                            fontSize: '0.9rem',
-                            lineHeight: 1.6,
+                            fontSize: '0.8rem',
+                            lineHeight: 1.5,
                         }}>I'll guide your thinking with questions and hints. I won't give you the answer unless you really need it!</p>
 
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '0.75rem',
-                            marginTop: '2rem',
+                            gap: '0.5rem',
+                            marginTop: '1.25rem',
                         }}>
                             {['How should I approach this problem?', "What data structure should I use?", "I'm stuck, can you give me a hint?"].map((q) => (
                                 <button
@@ -156,9 +197,9 @@ export const ChatInterface = ({ problemId }: ChatInterfaceProps) => {
                                     className="clay-card card-hover"
                                     onClick={() => { setInput(q); }}
                                     style={{
-                                        padding: '0.75rem 1rem',
+                                        padding: '0.55rem 0.85rem',
                                         color: 'var(--text-secondary)',
-                                        fontSize: '0.85rem',
+                                        fontSize: '0.8rem',
                                         cursor: 'pointer',
                                         textAlign: 'left',
                                         border: 'none',

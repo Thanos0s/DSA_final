@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { Login, Register, Home, ProblemWorkspace, AiChatMode, Profile } from './pages';
+import { Login, Register, Home, ProblemWorkspace, AiChatMode, Profile, Landing } from './pages';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -8,11 +8,14 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Layout />}>
+                    {/* Public routes */}
+                    <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
 
+                    {/* Protected routes */}
                     <Route element={<ProtectedRoute />}>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/home" element={<Home />} />
                         <Route path="/problem/:slug" element={<ProblemWorkspace />} />
                         <Route path="/chat" element={<AiChatMode />} />
                         <Route path="/profile" element={<Profile />} />

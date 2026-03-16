@@ -37,7 +37,7 @@ export const Navbar = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
             }}>
-                <Link to="/" style={{
+                <Link to="/home" style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
@@ -92,7 +92,7 @@ export const Navbar = () => {
                                 }}>
                                     <User size={14} color="white" />
                                 </div>
-                                <span style={{
+                                <span className="mobile-hidden" style={{
                                     fontSize: '0.85rem',
                                     color: 'var(--text-secondary)',
                                     fontWeight: 500,
@@ -101,7 +101,7 @@ export const Navbar = () => {
                                 </span>
                             </Link>
 
-                            <div style={{
+                            <div className="mobile-hidden" style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '0.4rem',
@@ -153,7 +153,7 @@ export const Navbar = () => {
                                 e.currentTarget.style.color = 'var(--text-secondary)';
                             }}>
                                 <Bot size={14} />
-                                Tutor Mode
+                                <span className="mobile-hidden">Tutor Mode</span>
                             </Link>
                             <button
                                 onClick={handleLogout}
@@ -180,7 +180,7 @@ export const Navbar = () => {
                                 }}
                             >
                                 <LogOut size={14} />
-                                Logout
+                                <span className="mobile-hidden">Logout</span>
                             </button>
                         </>
                     ) : (

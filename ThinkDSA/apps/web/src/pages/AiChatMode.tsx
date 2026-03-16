@@ -16,13 +16,14 @@ export const AiChatMode = () => {
             <div className="clay-panel animate-fade-in" style={{
                 width: '100%',
                 maxWidth: '800px',
-                height: 'calc(100vh - 100px)',
+                height: '100%',
+                minHeight: 'calc(100vh - 100px)',
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
                 borderRadius: 'var(--radius-xl)',
             }}>
-                <div style={{
+                <div className="mobile-col" style={{
                     padding: '1.25rem 1.5rem',
                     borderBottom: '1px solid var(--border-subtle)',
                     background: 'var(--bg-elevated)',
@@ -55,7 +56,14 @@ export const AiChatMode = () => {
                             margin: 0,
                         }}>Ask complex DSA questions and get guided Socratic help.</p>
                     </div>
-                    <div style={{ paddingRight: '1rem', paddingTop: '1rem' }}>
+                    <div style={{ 
+                        paddingRight: '1rem', 
+                        paddingTop: '1rem',
+                        alignSelf: 'stretch',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
                         <TorchCheckbox checked={socraticMode} onChange={setSocraticMode} label={socraticMode ? "Socratic Mode" : "Direct Answers"} />
                     </div>
                 </div>

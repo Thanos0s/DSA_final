@@ -7,14 +7,17 @@ import { SYSTEM_PROMPT_TEMPLATE } from '../prompts/systemPrompts';
 
 const messageSchema = z.object({
     content: z.string().min(1),
-    problemId: z.string().uuid().optional(), // Optional if continuing existing convo
+    problemId: z.string().uuid().optional(),
     conversationId: z.string().uuid().optional(),
+    model: z.enum(['groq', 'ollama']).default('groq'),
+    code: z.string().optional(),
+    language: z.string().optional(),
 });
 
 export const sendMessage = async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.user!.userId;
-        const { content, problemId, conversationId } = messageSchema.parse(req.body);
+        const { content, problemId, conversationId, model, code, language } = messageSchema.parse(req.body);
 
         let conversation;
 
@@ -54,10 +57,14 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             },
         });
 
-        // Prepare context for AI using the Socratic tutoring prompt
-        const systemPrompt = SYSTEM_PROMPT_TEMPLATE
+        let systemPrompt = SYSTEM_PROMPT_TEMPLATE
             .replace('{{PROBLEM_TITLE}}', conversation.problem.title)
             .split('{{PROBLEM_STATEMENT}}').join(conversation.problem.statement);
+
+        // Inject the user's current code into the system prompt so the AI can see it
+        if (code && code.trim()) {
+            systemPrompt += `\n\n--- STUDENT'S CURRENT CODE (${language || 'unknown language'}) ---\n\`\`\`${language || ''}\n${code}\n\`\`\`\n--- END OF CODE ---\nYou can see the student's code above. Reference it directly when helping them. If they ask about errors or bugs, analyze their actual code.`;
+        }
 
         // Retrieve full history including the new message
         const history = await prisma.message.findMany({
@@ -71,7 +78,7 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
         }));
 
         // Call AI
-        const aiResponseContent = await generateAIResponse(systemPrompt, aiMessages);
+        const aiResponseContent = await generateAIResponse(systemPrompt, aiMessages, model);
 
         // Save AI response
         const aiMessage = await prisma.message.create({

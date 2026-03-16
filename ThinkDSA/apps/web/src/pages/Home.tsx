@@ -45,7 +45,7 @@ export const Home = () => {
                 marginBottom: '2.5rem',
                 paddingTop: '1rem',
             }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div className="mobile-col" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
                     <h1 style={{
                         fontSize: '2rem',
                         fontWeight: 800,
@@ -68,6 +68,7 @@ export const Home = () => {
                 {/* Stats Row */}
                 <div style={{
                     display: 'flex',
+                    flexWrap: 'wrap',
                     gap: '1rem',
                     marginTop: '1.5rem',
                 }}>

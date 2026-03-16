@@ -1,11 +1,14 @@
 import api from './api';
 import { Conversation, Message } from '../types';
 
-export const sendMessage = async (content: string, problemId?: string, conversationId?: string): Promise<{ message: Message; conversationId: string }> => {
+export const sendMessage = async (content: string, problemId?: string, conversationId?: string, model: 'groq' | 'ollama' = 'groq', code?: string, language?: string): Promise<{ message: Message; conversationId: string }> => {
     const response = await api.post<{ message: Message; conversationId: string }>('/conversations/messages', {
         content,
         problemId,
         conversationId,
+        model,
+        code,
+        language,
     });
     return response.data;
 };

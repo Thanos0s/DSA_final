@@ -20,7 +20,7 @@ export const Register = () => {
         try {
             const data = await register(email, password, name);
             setAuth(data);
-            navigate('/');
+            navigate('/home');
         } catch (err: any) {
             setError(err.message || 'Registration failed');
         } finally {
@@ -249,7 +249,7 @@ export const Register = () => {
                             try {
                                 const data = await signInWithGoogle();
                                 setAuth(data);
-                                navigate('/');
+                                navigate('/home');
                             } catch (err: any) {
                                 setError(err.message || 'Google Sign-In failed');
                             } finally {

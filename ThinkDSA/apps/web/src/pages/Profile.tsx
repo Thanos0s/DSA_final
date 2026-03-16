@@ -60,8 +60,8 @@ export const Profile = () => {
         }}>
             
             {/* Header / Stats Panel */}
-            <div className="clay-panel" style={{ padding: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div className="clay-panel" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '2rem' }}>
+                <div className="mobile-col" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                     {/* Avatar Circle */}
                     <div style={{
                         width: '80px', height: '80px', borderRadius: '50%',
@@ -82,7 +82,7 @@ export const Profile = () => {
                 </div>
 
                 {/* Scorecards */}
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem', width: '100%' }}>
                     <div className="clay-inset" style={{ padding: '1rem 1.5rem', textAlign: 'center', minWidth: '120px' }}>
                         <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.3rem', display: 'flex', alignItems:'center', justifyContent: 'center', gap: '0.3rem' }}>
                             <Star size={14} color="var(--accent-amber)" /> Rank
@@ -110,7 +110,7 @@ export const Profile = () => {
             <Heatmap data={heatmapData} />
 
             {/* Bottom Row (Badges & Recent) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(300px, 1fr)', gap: '2rem' }}>
+            <div className="mobile-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                 
                 {/* Badges Panel */}
                 <div className="clay-card" style={{ padding: '1.5rem' }}>

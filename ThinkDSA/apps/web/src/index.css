@@ -18,40 +18,42 @@
 
 :root,
 [data-theme='earthy'] {
-  /* Background */
-  --bg-primary: #1A1614; /* Deep dark brown */
-  --bg-secondary: #241F1C; /* Slightly lighter muddy earth */
-  --bg-card: #2B2521;
-  --bg-card-hover: #332C28;
-  --bg-elevated: #3A322D; /* Muddy white for bright elements or contrast */
-  --bg-input: #211C19;
-  --bg-muddy-white: #EAE6DF;
+  /* Background — true blacks */
+  --bg-primary: #0A0A0C;
+  --bg-secondary: #111114;
+  --bg-card: #161619;
+  --bg-card-hover: #1C1C20;
+  --bg-elevated: #222228;
+  --bg-input: #0E0E11;
+  --bg-muddy-white: #FBE4D8; /* Pale off-white/pink */
 
-  /* Text */
-  --text-primary: #EAE6DF; /* Muddy white */
-  --text-secondary: #BAAFA6;
-  --text-muted: #8E837A;
+  /* Text — using the lightest tones */
+  --text-primary: #FBE4D8; /* Pale off-white/pink */
+  --text-secondary: #DFB6B2; /* Light greyish-pink */
+  --text-muted: #9E7A8A; /* Muted blend of mauve */
 
   /* Accent colors */
-  --accent-burnt-orange: #C96A35;
-  --accent-earth-green: #587F5A;
-  --accent-amber: #D59B4A;
-  --accent-red: #B54D4D;
+  --accent-burnt-orange: #854F6C; /* Dusty mauve as primary accent */
+  --accent-earth-green: #DFB6B2; /* Greyish-pink as secondary accent */
+  --accent-amber: #DFB6B2;
+  --accent-red: #B54D6E;
+  --accent-emerald: #DFB6B2;
 
   /* Borders */
-  --border-subtle: rgba(234, 230, 223, 0.08); /* Faint muddy white */
-  --border-default: rgba(234, 230, 223, 0.15);
-  --border-focus: rgba(201, 106, 53, 0.5); /* Burnt orange focus */
+  --border-subtle: rgba(251, 228, 216, 0.08);
+  --border-default: rgba(251, 228, 216, 0.15);
+  --border-focus: rgba(133, 79, 108, 0.6);
 
   /* 3D Claymorphism / Neumorphism Shadows */
   --shadow-3d-out: 
-    -4px -4px 10px rgba(58, 50, 45, 0.3), /* Highlight */
-    6px 6px 15px rgba(10, 8, 7, 0.8);    /* Deep shadow */
+    -4px -4px 10px rgba(82, 43, 91, 0.3), /* Highlight */
+    6px 6px 15px rgba(12, 0, 12, 0.8);    /* Deep shadow */
   
   --shadow-3d-in: 
-    inset -3px -3px 8px rgba(58, 50, 45, 0.2), 
-    inset 4px 4px 10px rgba(10, 8, 7, 0.7);
+    inset -3px -3px 8px rgba(82, 43, 91, 0.2), 
+    inset 4px 4px 10px rgba(12, 0, 12, 0.7);
 }
+
 
 :root {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -65,11 +67,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===== RESET ===== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* Premium Noise Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.04;
+  z-index: 100;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 body {
@@ -77,6 +85,7 @@ body {
   min-height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 #root {
@@ -506,4 +515,191 @@ body {
 
 .prose-dark a:hover {
   text-decoration: underline;
+}
+
+/* ===== UIVERSE LOGIN FORM PRESET ===== */
+.uiverse-form {
+  --background: var(--bg-secondary);
+  --input-focus: var(--accent-burnt-orange);
+  --font-color: var(--text-primary);
+  --font-color-sub: var(--text-muted);
+  --bg-color: var(--bg-input);
+  --main-color: #0A0807;
+
+  padding: 40px;
+  background: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--main-color);
+  box-shadow: 6px 6px 0px var(--main-color);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.uiverse-form > p {
+  color: var(--font-color);
+  font-weight: 800;
+  font-size: 28px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.uiverse-form > p > span {
+  color: var(--font-color-sub);
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.uiverse-separator {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.uiverse-separator > div {
+  flex: 1;
+  height: 2px;
+  border-radius: 5px;
+  background-color: var(--main-color);
+}
+
+.uiverse-separator > span {
+  color: var(--font-color);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.uiverse-oauthButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px 0px var(--main-color);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  transition: all 250ms;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.uiverse-oauthButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.uiverse-oauthButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color: var(--accent-earth-green);
+  z-index: -1;
+  transition: all 250ms;
+}
+
+.uiverse-oauthButton.email-btn::before {
+  background-color: var(--accent-burnt-orange);
+}
+
+.uiverse-oauthButton:hover {
+  color: #fff;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--main-color);
+}
+
+.uiverse-oauthButton:hover::before {
+  width: 100%;
+}
+
+.uiverse-input {
+  width: 100%;
+  height: 48px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px 0px var(--main-color);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 5px 15px;
+  outline: none;
+  transition: all 150ms;
+}
+
+.uiverse-input::placeholder {
+  color: var(--text-muted);
+}
+
+.uiverse-input:focus {
+  border-color: var(--input-focus);
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+@media (max-width: 768px) {
+  .mobile-col {
+    flex-direction: column !important;
+  }
+
+  .mobile-hidden {
+    display: none !important;
+  }
+
+  .mobile-p-small {
+    padding: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .mobile-h-auto {
+    height: auto !important;
+    overflow-y: auto !important;
+    min-height: 100dvh;
+  }
+
+  /* Workspace panels: stack vertically, full width, fixed heights */
+  .workspace-panel-problem {
+    width: 100% !important;
+    min-width: unset !important;
+    height: 380px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .workspace-panel-editor {
+    width: 100% !important;
+    min-width: unset !important;
+    height: 520px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .workspace-panel-chat {
+    width: 100% !important;
+    min-width: unset !important;
+    height: 480px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Hide drag resizers on mobile */
+  .panel-resizer {
+    display: none !important;
+  }
 }
