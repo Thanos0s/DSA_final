@@ -1,5 +1,8 @@
 import * as path from 'path';
 import * as admin from 'firebase-admin';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
 const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
