@@ -1,0 +1,53 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+	darkMode: "class",
+	content: [
+		"./index.html",
+		"./src/**/*.{js,ts,jsx,tsx}",
+	],
+	theme: {
+		extend: {
+			colors: {
+				"primary": "#854F6C",
+				"on-primary": "#FBE4D8",
+				"primary-container": "#522B5B",
+				"on-primary-container": "#FBE4D8",
+				"secondary": "#DFB6B2",
+				"on-secondary": "#190019",
+				"secondary-container": "#2B124C",
+				"on-secondary-container": "#DFB6B2",
+				"tertiary": "#522B5B",
+				"on-tertiary": "#FBE4D8",
+				"tertiary-container": "#2B124C",
+				"on-tertiary-container": "#DFB6B2",
+				"error": "#CF6679",
+				"background": "#0A0A0C",
+				"on-background": "#FBE4D8",
+				"surface": "#111114",
+				"on-surface": "#FBE4D8",
+				"surface-variant": "#1C1C20",
+				"on-surface-variant": "#DFB6B2",
+				"outline": "#2A2A30",
+				"outline-variant": "#1E1E22",
+				"surface-container-lowest": "#070709",
+				"surface-container-low": "#0A0A0C",
+				"surface-container": "#111114",
+				"surface-container-high": "#161619",
+				"surface-container-highest": "#1C1C20",
+			},
+			fontFamily: {
+				"headline": ["Inter", "sans-serif"],
+				"body": ["Inter", "sans-serif"],
+				"label": ["Inter", "sans-serif"],
+				"mono": ["JetBrains Mono", "monospace"],
+			},
+			borderRadius: {
+				"DEFAULT": "0.5rem",
+				"lg": "1rem",
+				"xl": "1.5rem",
+				"full": "9999px",
+			},
+		},
+	},
+	plugins: [],
+}
